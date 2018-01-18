@@ -4,8 +4,8 @@
 
 * `devs created <days = 1>` - Find Devs created in last X days - Apigee
 * `targetserver list <env>` - Apigee
-* `hubot targetserver (add|update) <env> <name> <hostname>` - Apigee
-* `hubot targetserver delete <env> <name>` - Apigee
+* `targetserver (add|update) <env> <name> <hostname>` - Apigee
+* `targetserver delete <env> <name>` - Apigee
 
 
 
