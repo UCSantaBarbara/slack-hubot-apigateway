@@ -1,0 +1,15 @@
+[
+    "hubot-diagnostics",
+    "hubot-help",
+    "hubot-maps",
+    "hubot-rules",
+    "hubot-shipit",
+    "jobot-brain-file",
+    "hubot-schedule",
+    "hubot-reload-scripts",
+    "hubot-brain-inspect",
+    "hubot-karma-classic",
+    "hubot-auth",
+    "hubot-acrogov",
+    "hubot-slack-utils"
+]

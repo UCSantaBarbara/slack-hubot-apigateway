@@ -1,0 +1,22 @@
+{
+    "Path":  "C:\\ApiGatewayHubot\\config.json",
+    "BotAdapter":  "slack",
+    "BotDebugLog":  {
+         "IsPresent":  true
+    },
+    "BotDescription":  "apibot",
+    "BotPath":  "D:\\Projects\\SAIT\\slack-hubot-apigateway",
+    "BotOwner":  "Steven Maglio",
+    "LogPath":  "D:\\Projects\\SAIT\\slack-hubot-apigateway\\logs",
+    "BotName":  "apibot",
+    "ArgumentList":  "--adapter slack",
+    "BotExternalScriptsPath":  "D:\\Projects\\SAIT\\slack-hubot-apigateway\\external-scripts.json",
+    "PidPath":  "D:\\Projects\\SAIT\\slack-hubot-apigateway\\apibotadmin.pid",
+    "EnvironmentVariables":  {
+         "HUBOT_ADAPTER":  "slack",
+         "HUBOT_LOG_LEVEL":  "debug",
+		 "FILE_BRAIN_PATH": "C:\\slack-hubot-apigateway\\",
+		 "HUBOT_SLACK_TOKEN": "put slack token here",
+		 "HUBOT_AUTH_ADMIN": "U1V9CMU8Y,U2078L17Y,U1TT6U50W,U1TJWQEG3,U21SHSY67,U1TLTC690,U2CK97J6M,U3B4M9F3M,U4DHCAGTV,U2CMY8QBU,U66HVB4FM,U2CMHA9BP,U1UPTFVR9,U78E1DYKY"
+    }
+}
