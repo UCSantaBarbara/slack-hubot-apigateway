@@ -5,25 +5,26 @@
   "author": "Allen",
   "description": "sysbot",
   "dependencies": {
-    "edge": "^5.0.0",
-    "edge-ps": "^0.1.0-pre",
+    "dotenv": "^6.0.0",
     "hubot": "^2.19.0",
     "hubot-auth": "^2.1.0",
     "hubot-brain-inspect": "0.0.1",
-    "hubot-diagnostics": "0.0.1",
-    "hubot-help": "^0.2.0",
-    "hubot-karma-classic": "^1.0.3",
-    "hubot-maps": "0.0.2",
+    "hubot-help": "^0.2.2",
+    "hubot-pugme": "^0.1.1",
+    "hubot-redis-brain": "0.0.4",
     "hubot-reload-scripts": "^0.1.4",
-    "hubot-rules": "^0.1.1",
-    "hubot-schedule": "^0.5.1",
+    "hubot-rules": "^0.1.2",
     "hubot-scripts": "^2.17.2",
-    "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^4.3.3",
+    "hubot-slack": "^4.5.0",
     "hubot-slack-utils": "0.0.5",
     "jobot-brain-file": "^1.0.1"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "8.x.x"
+  },
+  "scripts": {
+    "start": "node index.js --adapter slack",
+    "dev": "",
+    "prod": ""
   }
 }
