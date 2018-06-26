@@ -1,4 +1,4 @@
-const { spawn, exec } = require('child_process')
+const { spawn } = require('cross-spawn')
 const dotenv = require('dotenv')
 dotenv.config()
 

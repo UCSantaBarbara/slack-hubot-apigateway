@@ -3,9 +3,9 @@
 ## Why?
 
 This chat robot exists because:
-* ?? (TODO)
+* ?? (TODO) (diana: what should hubot do?  requirements?)
 
-## Current Commands
+## Current Commands (TODO)
 
 * `devs created <days = 1>` - Find Devs created in last X days - Apigee
 
@@ -15,19 +15,12 @@ This chat robot exists because:
 
 * `stats`
 
-
 ## Development
 
 * Clone this repo
-* ...
 * standup your own slack community instance (this is because Slack only allows 5 integrations in their free tier and the UCSB Tech Community has already exhausted all 5 integration slots)
-
-### Windows
-
-* ...
-
-### Mac
-
+  * get a bot token in your community (TODO)
+* `cd` into this repo and run `npm install`
 * Create a `.env` file in this repo's root directory so that it contains the following:
 ```sh
 HUBOT_SLACK_TOKEN=your-hubot-slack-oauth-token-here
@@ -37,12 +30,16 @@ APIGEE_USERNAME=your-apigee-username
 APIGEE_PASSWORD=your-apigee-password 
 ```
 
-## Deploying to Google App Engine Standard Environment
+Ideally, this should work in both Windows and Mac/Linux environments because we are using [cross-spawn](https://www.npmjs.com/package/cross-spawn).
 
-* Create a new GAE standard environment
-* open up your console
+
+## Deploying to Google App Engine Standard Environment (TODO)
+
+* Create a new GAE standard environment (beta?)
+* open up your GAE shell console
 * clone this repo
 * cd into this repo
-* configure app.yaml and ensure your environmental variables
-* ...
-* `gcloud app deploy`
+* run `npm install`
+* configure `app.yaml` and ensure your environmental variables (ideally, we can spit this out using deploy scripts launched from `npm run start`) (TODO)
+* ...??
+* run `gcloud app deploy`
