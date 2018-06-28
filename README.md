@@ -29,6 +29,7 @@ HUBOT_SLACK_TOKEN=your-hubot-slack-oauth-token-here
 APIGEE_USERNAME=your-apigee-username
 APIGEE_PASSWORD=your-apigee-password 
 ```
+* `npm run dev`
 
 Ideally, this should work in both Windows and Mac/Linux environments because we are using [cross-spawn](https://www.npmjs.com/package/cross-spawn).
 
@@ -41,5 +42,5 @@ Ideally, this should work in both Windows and Mac/Linux environments because we 
 * cd into this repo
 * run `npm install`
 * configure `app.yaml` and ensure your environmental variables (ideally, we can spit this out using deploy scripts launched from `npm run start`) (TODO)
-* ...??
+* ...??  `npm run start`?
 * run `gcloud app deploy`

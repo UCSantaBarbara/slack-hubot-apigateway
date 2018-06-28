@@ -26,8 +26,8 @@
     "node": "8.x.x"
   },
   "scripts": {
-    "start": "node index.js --adapter slack",
-    "dev": "",
+    "start": "echo this should be configured to be GCP deployment only",
+    "dev": "node index.js --adapter slack",
     "prod": ""
   }
 }
