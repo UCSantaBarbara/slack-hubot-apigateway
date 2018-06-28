@@ -1,0 +1,1 @@
+env HUBOT_ADAPTER="slack" env HUBOT_LOG_LEVEL="debug" env FILE_BRAIN_PATH="/home/vagrant/hubot/brain" env HUBOT_SLACK_TOKEN="xoxb-TOKEN-GOES-HERE" env HUBOT_AUTH_ADMIN="ADMIN123" ./node_modules/hubot/bin/hubot --adapter slack
