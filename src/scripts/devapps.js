@@ -28,7 +28,9 @@ module.exports = robot => {
     const status = res.match[1]
 
     try {
-      const data = await apiProducts(status)
+      const data = await apiProducts().then(allProducts =>
+        allProducts.filter(apiProduct => apiProduct.status == status)
+      )
 
       res.send(formatMarkDown(data))
 

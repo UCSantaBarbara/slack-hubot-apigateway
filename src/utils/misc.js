@@ -3,7 +3,7 @@ const { map, mergeMap, filter, toArray, mergeAll } = require('rxjs/operators')
 
 const { getDeveloper, getDeveloperApps } = require('../endpoints/apigeeActions')
 
-const apiProducts = status =>
+const apiProducts = () =>
   from(getDeveloper())
     .pipe(
       mergeAll(),
@@ -31,7 +31,6 @@ const apiProducts = status =>
         }, [])
       }),
       mergeAll(),
-      filter(developerApps => developerApps.status == status),
       toArray()
     )
     .toPromise()
