@@ -4,6 +4,7 @@
   "author": "UCSB Developers",
   "description": "ApiGateway Hubot (@apibot) for ucsbtech Slack workspace",
   "dependencies": {
+    "@slack/client": "^4.3.1",
     "apigee-auth": "^1.0.0",
     "axios": "^0.18.0",
     "cross-spawn": "^6.0.5",
@@ -20,6 +21,7 @@
     "hubot-slack": "^4.5.0",
     "hubot-slack-utils": "0.0.5",
     "jobot-brain-file": "^1.0.1",
+    "right-pad": "^1.0.1",
     "rxjs": "^6.2.1"
   },
   "engines": {

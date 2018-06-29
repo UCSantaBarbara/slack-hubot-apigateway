@@ -1,7 +1,7 @@
 const { from } = require('rxjs')
 const { map, mergeMap, filter, toArray, mergeAll } = require('rxjs/operators')
 
-const { getDeveloper, getDeveloperApps } = require('./endpoints/apigeeActions')
+const { getDeveloper, getDeveloperApps } = require('../endpoints/apigeeActions')
 
 const apiProducts = status =>
   from(getDeveloper())
