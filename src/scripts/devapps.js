@@ -2,7 +2,7 @@
 //   Generates help commands for Hubot.
 //
 // Commands:
-//   hubot devapps (approved|revoked) apiproducts - Display api products by status
+//   hubot devapps (all|no|approved|pending|revoked) - Display developer applications by status or by its api product status
 //
 // URLS:
 //   /hubot/help
@@ -15,30 +15,45 @@
 // Notes:
 //   These commands are grabbed from comment blocks at the top of each file.
 
-const { WebClient } = require('@slack/client')
-const { formatMarkDown } = require('../utils')
+const { WebClient: slackClient } = require('@slack/client')
+const cTable = require('console.table')
 const { apiProducts } = require('../utils/misc')
 
-const listenToDevapps = /devapps (no|approved|pending|revoked) apiproducts/i
+
+const listenToDevapps = /devapps (all|no|approved|pending|revoked)/i
+
 
 module.exports = robot => {
-  const slack = new WebClient(robot.adapter.options.token)
+  const slack = new slackClient(robot.adapter.options.token)
 
   robot.respond(listenToDevapps, async res => {
     const status = res.match[1]
 
     try {
-      const data = await apiProducts(status)
+      const data = await apiProducts().then(allProducts =>
+        allProducts.filter(apiProduct => {
+          if (status === 'all') {
+            return true
+          }
+          if (status === 'no') {
+            return apiProduct.apiStatus === '---'
+          }
+          if (status === 'revoked') {
+            return (
+              apiProduct.appStatus === status || apiProduct.apiStatus === status
+            )
+          }
+          if (status === 'approved' || status === 'pending') {
+            return apiProduct.apiStatus === status
+          }
+        })
+      )
 
-      res.send(formatMarkDown(data))
-
-      //TODO: we should use slack api instead, but they're changing the API in June 2018 so it's not working really well
-      // await slack.files.upload({
-      //   channel: res.message.room, //this makes it public
-      //   content: 'this is a snippet content',
-      //   // content: `\`\`\`\n${slackFormatCodeBlock(data)}\n\`\`\``,
-      //   // title: status
-      // })
+      await slack.files.upload({
+        channels: res.message.room, //this makes it public, otherwise it wont output
+        content: cTable.getTable(data).trim(),
+        title: status
+      })
     } catch (err) {
       res.reply(
         'uh oh, something bad happened.  Try your message again.  If error persists, call for help.'
