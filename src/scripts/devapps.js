@@ -3,7 +3,7 @@
 //
 // Commands:
 //   hubot devapps (all|no|approved|pending|revoked) - Display developer applications by status or by its api product status
-//
+//   hubot devapps search <text> - Search all developer applications that contains <text>
 // URLS:
 //   /hubot/help
 //
@@ -21,10 +21,35 @@ const { apiProducts } = require('../utils/misc')
 
 
 const listenToDevapps = /devapps (all|no|approved|pending|revoked)/i
+const searchDevApps = /devapps search (.*)/i
 
 
 module.exports = robot => {
   const slack = new slackClient(robot.adapter.options.token)
+
+  robot.respond(searchDevApps, async res => {
+    const searchText = res.match[1]
+    try {
+      const data = await apiProducts().then(allProducts =>
+        allProducts.filter(
+          apiProduct =>
+            apiProduct.developer.includes(searchText) ||
+            apiProduct.developerApp.includes(searchText) ||
+            apiProduct.apiProduct.includes(searchText)
+        )
+      )
+
+      await slack.files.upload({
+        channels: res.message.room, //this makes it public, otherwise it wont output
+        content: cTable.getTable(data).trim(),
+        title: `searching for ${searchText}`
+      })
+    } catch (err) {
+      res.reply(
+        'uh oh, something bad happened.  Try your message again.  If error persists, call for help.'
+      )
+    }
+  })
 
   robot.respond(listenToDevapps, async res => {
     const status = res.match[1]
