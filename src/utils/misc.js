@@ -27,18 +27,18 @@ const apiProducts = () =>
               developer,
               developerApp,
               appStatus,
-              apiproduct: '---',
+              apiProduct: '---',
               apiStatus: '---'
             }
           ]
         } else {
           return apiProducts.reduce((products, product) => {
-            const { status: apiStatus, apiproduct } = product
+            const { status: apiStatus, apiproduct: apiProduct } = product
             products.push({
               developer,
               developerApp,
               appStatus,
-              apiproduct,
+              apiProduct,
               apiStatus
             })
             return products
