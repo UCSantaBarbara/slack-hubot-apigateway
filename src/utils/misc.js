@@ -8,7 +8,6 @@ const apiProducts = () =>
     .pipe(
       mergeAll(),
       mergeMap(developer => getDeveloper(developer)),
-      filter(developer => developer.apps.length !== 0),
       mergeMap(developer => {
         const { apps, email } = developer
         return from(apps).pipe(
@@ -17,18 +16,34 @@ const apiProducts = () =>
         )
       }),
       map(app => {
-        const { email, name: developerApplication } = app
+        const { email: developer, name: developerApp, status: appStatus } = app
+
         //TODO: determine why credentials only have one member
-        return app.credentials[0].apiProducts.reduce((products, product) => {
-          const { status, apiproduct } = product
-          products.push({
-            email,
-            developerApplication,
-            status,
-            apiproduct
-          })
-          return products
-        }, [])
+        const apiProducts = app.credentials[0].apiProducts
+
+        if (apiProducts.length == 0) {
+          return [
+            {
+              developer,
+              developerApp,
+              appStatus,
+              apiproduct: '---',
+              apiStatus: '---'
+            }
+          ]
+        } else {
+          return apiProducts.reduce((products, product) => {
+            const { status: apiStatus, apiproduct } = product
+            products.push({
+              developer,
+              developerApp,
+              appStatus,
+              apiproduct,
+              apiStatus
+            })
+            return products
+          }, [])
+        }
       }),
       mergeAll(),
       toArray()

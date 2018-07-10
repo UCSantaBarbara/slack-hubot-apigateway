@@ -1,7 +1,10 @@
 const axios = require('axios')
 const ApigeeAuth = require('apigee-auth')
 
-const apigeeAuth = new ApigeeAuth(process.env.APIGEE_USERNAME, process.env.APIGEE_PASSWORD)
+const apigeeAuth = new ApigeeAuth(
+  process.env.APIGEE_USERNAME,
+  process.env.APIGEE_PASSWORD
+)
 
 const apigeeClient = axios.create({
   baseURL: 'https://api.enterprise.apigee.com/v1/organizations/ucsb'
