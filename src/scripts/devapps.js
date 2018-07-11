@@ -18,6 +18,7 @@
 const { WebClient: slackClient } = require('@slack/client')
 const cTable = require('console.table')
 const { apiProducts } = require('../utils/misc')
+const { firstBy } = require('thenby')
 
 
 const listenToDevapps = /devapps (all|no|approved|pending|revoked)/i
@@ -37,6 +38,13 @@ module.exports = robot => {
             apiProduct.developerApp.includes(searchText) ||
             apiProduct.apiProduct.includes(searchText)
         )
+      )
+
+      data.sort(
+        firstBy('developer')
+          .thenBy('developerApp')
+          .thenBy('apiProduct')
+          .thenBy('apiStatus')
       )
 
       await slack.files.upload({
@@ -72,6 +80,13 @@ module.exports = robot => {
             return apiProduct.apiStatus === status
           }
         })
+      )
+
+      data.sort(
+        firstBy('developer')
+          .thenBy('developerApp')
+          .thenBy('apiProduct')
+          .thenBy('apiStatus')
       )
 
       await slack.files.upload({

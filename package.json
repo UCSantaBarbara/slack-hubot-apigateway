@@ -23,7 +23,8 @@
     "hubot-slack-utils": "0.0.5",
     "jobot-brain-file": "^1.0.1",
     "right-pad": "^1.0.1",
-    "rxjs": "^6.2.1"
+    "rxjs": "^6.2.1",
+    "thenby": "^1.2.6"
   },
   "engines": {
     "node": "8.x.x"
