@@ -4,6 +4,9 @@
 // Commands:
 //   hubot devapps (all|no|approved|pending|revoked) - Display developer applications by status or by its api product status
 //   hubot devapps search <text> - Search all developer applications that contains <text>
+//   hubot devapps (approve|revoke) <developer> <developerApp> - Approve or revoke a developer app
+//   hubot devapps (approve|revoke) <developer> <developerApp> <apiProduct> - Approve of revoke an apiProduct within a developer app
+
 // URLS:
 //   /hubot/help
 //
@@ -20,13 +23,48 @@ const cTable = require('console.table')
 const { apiProducts } = require('../utils/misc')
 const { firstBy } = require('thenby')
 
-
+const { postDeveloperApp } = require('../endpoints/apigeeActions')
 const listenToDevapps = /devapps (all|no|approved|pending|revoked)/i
 const searchDevApps = /devapps search (.*)/i
 
+const modifyDevAppStatus = /devapps (approve|revoke) (\S+) (\S+)(?: (\S+))?/i
 
 module.exports = robot => {
   const slack = new slackClient(robot.adapter.options.token)
+
+  robot.respond(modifyDevAppStatus, async res => {
+    const [, action, developer, app, apiProduct] = res.match
+
+    //TODO: we need to apply status if someone inputs an apiProduct
+    try {
+      await postDeveloperApp(developer, app, action)
+
+      const data = await apiProducts().then(allProducts =>
+        allProducts.filter(
+          apiProduct =>
+            apiProduct.developer == developer && apiProduct.developerApp == app
+        )
+      )
+
+      data.sort(
+        firstBy('developer')
+          .thenBy('developerApp')
+          .thenBy('apiProduct')
+          .thenBy('apiStatus')
+      )
+
+      await slack.files.upload({
+        channels: res.message.room, //this makes it public, otherwise it wont output
+        content: cTable.getTable(data).trim(),
+        title: `updating ${developer} ${app} to status ${action}`
+      })
+    } catch (err) {
+      console.log('err', err)
+      res.reply(
+        'uh oh, something bad happened.  Try your message again.  If error persists, call for help.'
+      )
+    }
+  })
 
   robot.respond(searchDevApps, async res => {
     const searchText = res.match[1]
