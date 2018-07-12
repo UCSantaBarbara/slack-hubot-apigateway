@@ -24,9 +24,25 @@ const { apiProducts } = require('../utils/misc')
 const { firstBy } = require('thenby')
 
 const { postDeveloperApp } = require('../endpoints/apigeeActions')
+/*
+examples:
+"devapps all" (shows all developer apps and their api products)
+"devapps no" (shows developer apps with no api products)
+"devapps approved" (shows developer apps that are approved)
+*/
 const listenToDevapps = /devapps (all|no|approved|pending|revoked)/i
+
+/*
+examples:
+"devapps search kevinwu" (shows all developer alls where it can find on a search term of 'kevinwu' in the developer, developerApp, or apiProduct)
+*/
 const searchDevApps = /devapps search (.*)/i
 
+/*
+examples:
+"devapps approve kevin.wu@gmail.com kevinwu-double-mixed" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed)
+"devapps approve kevin.wu@gmail.com kevinwu-double-mixed student-lookups" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed/student-loooup)
+*/
 const modifyDevAppStatus = /devapps (approve|revoke) (\S+) (\S+)(?: (\S+))?/i
 
 module.exports = robot => {
