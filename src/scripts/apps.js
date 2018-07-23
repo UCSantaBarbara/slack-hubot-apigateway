@@ -2,10 +2,10 @@
 //   Generates help commands for Hubot.
 //
 // Commands:
-//   hubot devapps (all|no|approved|pending|revoked) - Display developer applications by status or by its api product status
-//   hubot devapps search <text> - Search all developer applications that contains <text>
-//   hubot devapps (approve|revoke) <developer> <developerApp> - Approve or revoke a developer app
-//   hubot devapps (approve|revoke) <developer> <developerApp> <apiProduct> - Approve of revoke an apiProduct within a developer app
+//   hubot apps (all|no|approved|pending|revoked) - Display developer applications by status or by its api product status
+//   hubot apps search <text> - Search all developer applications that contains <text>
+//   hubot apps (approve|revoke) <developer> <developerApp> - Approve or revoke a developer app (applied to developer app and all its products)
+//   hubot apps (approve|revoke) <developer> <developerApp> <apiProduct> - Approve of revoke an apiProduct within a developer app
 
 // URLS:
 //   /hubot/help
@@ -23,36 +23,44 @@ const cTable = require('console.table')
 const { apiProducts } = require('../utils/misc')
 const { firstBy } = require('thenby')
 
-const { postDeveloperApp } = require('../endpoints/apigeeActions')
+const {
+  postDeveloperApp,
+  postDeveloperAppProduct,
+  getDeveloperApps
+} = require('../endpoints/apigeeActions')
 /*
 examples:
-"devapps all" (shows all developer apps and their api products)
-"devapps no" (shows developer apps with no api products)
-"devapps approved" (shows developer apps that are approved)
+"apps all" (shows all developer apps and their api products)
+"apps no" (shows developer apps with no api products)
+"apps approved" (shows developer apps that are approved)
 */
-const listenToDevapps = /devapps (all|no|approved|pending|revoked)/i
+const listenToApps = /apps (all|no|approved|pending|revoked)/i
 
 /*
 examples:
-"devapps search kevinwu" (shows all developer alls where it can find on a search term of 'kevinwu' in the developer, developerApp, or apiProduct)
+"apps search kevinwu" (shows all developer alls where it can find on a search term of 'kevinwu' in the developer, developerApp, or apiProduct)
 */
-const searchDevApps = /devapps search (.*)/i
+const searchApps = /apps search (.*)/i
 
 /*
 examples:
-"devapps approve kevin.wu@gmail.com kevinwu-double-mixed" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed)
-"devapps approve kevin.wu@gmail.com kevinwu-double-mixed student-lookups" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed/student-loooup)
+"apps approve kevin.wu@gmail.com kevinwu-double-mixed" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed)
+"apps approve kevin.wu@gmail.com kevinwu-double-mixed student-lookups" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed/student-loooup)
 */
-const modifyDevAppStatus = /devapps (approve|revoke) (\S+) (\S+)(?: (\S+))?/i
+const modifyAppStatus = /apps (approve|revoke) (\S+) (\S+)(?: (\S+))?/i
 
 module.exports = robot => {
   const slack = new slackClient(robot.adapter.options.token)
 
-  robot.respond(modifyDevAppStatus, async res => {
+  robot.respond(modifyAppStatus, async res => {
     const [, action, developer, app, apiProduct] = res.match
 
     //TODO: we need to apply status if someone inputs an apiProduct
     try {
+      // const { credentials } = await getDeveloperApps(developer, app)
+      // const consumerKey = credentials[0].consumerKey
+      // await postDeveloperAppProduct(developer, app, apiProduct, consumerKey, action)
+
       await postDeveloperApp(developer, app, action)
 
       const data = await apiProducts().then(allProducts =>
@@ -82,7 +90,7 @@ module.exports = robot => {
     }
   })
 
-  robot.respond(searchDevApps, async res => {
+  robot.respond(searchApps, async res => {
     const searchText = res.match[1]
     try {
       const data = await apiProducts().then(allProducts =>
@@ -113,7 +121,7 @@ module.exports = robot => {
     }
   })
 
-  robot.respond(listenToDevapps, async res => {
+  robot.respond(listenToApps, async res => {
     const status = res.match[1]
 
     try {
