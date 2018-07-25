@@ -1,5 +1,5 @@
 const { from } = require('rxjs')
-const { map, mergeMap, filter, toArray, mergeAll } = require('rxjs/operators')
+const { map, mergeMap, toArray, mergeAll } = require('rxjs/operators')
 
 const { getDeveloper, getDeveloperApps } = require('../endpoints/apigeeActions')
 
