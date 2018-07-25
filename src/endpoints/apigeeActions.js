@@ -17,8 +17,25 @@ const postDeveloperApp = (developer, app, status) =>
     }
   })
 
+const postDeveloperAppProduct = (
+  developer,
+  app,
+  product,
+  consumerKey,
+  status
+) =>
+  apigeeClient.post(
+    `developers/${developer}/apps/${app}/keys/${consumerKey}/apiproducts/${product}?action=${status}`,
+    {
+      headers: {
+        'Content-Type': 'application/octet-stream'
+      }
+    }
+  )
+
 module.exports = {
   getDeveloper,
   getDeveloperApps,
-  postDeveloperApp
+  postDeveloperApp,
+  postDeveloperAppProduct
 }

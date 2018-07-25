@@ -4,8 +4,8 @@
 // Commands:
 //   hubot apps (all|no|approved|pending|revoked) - Display developer applications by status or by its api product status
 //   hubot apps search <text> - Search all developer applications that contains <text>
-//   hubot apps (approve|revoke) <developer> <developerApp> - Approve or revoke a developer app (applied to developer app and all its products)
-//   hubot apps (approve|revoke) <developer> <developerApp> <apiProduct> - Approve of revoke an apiProduct within a developer app
+//   hubot apps (approve|revoke) <developerEmail> <developerApp> - Approve or revoke a developer app and all of the api products associated with that developer app
+//   hubot apps (approve|revoke) <developerEmail> <developerApp> <apiProduct> - Approve or revoke an apiProduct within a developer app.  Does not apply status change to main developer app.
 
 // URLS:
 //   /hubot/help
@@ -28,6 +28,7 @@ const {
   postDeveloperAppProduct,
   getDeveloperApps
 } = require('../endpoints/apigeeActions')
+
 /*
 examples:
 "apps all" (shows all developer apps and their api products)
@@ -44,8 +45,8 @@ const searchApps = /apps search (.*)/i
 
 /*
 examples:
-"apps approve kevin.wu@gmail.com kevinwu-double-mixed" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed)
-"apps approve kevin.wu@gmail.com kevinwu-double-mixed student-lookups" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed/student-loooup)
+"apps approve kevin.wu@gmail.com kevinwu-double-mixed" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed and all of the api products associated with this developer app)
+"apps approve kevin.wu@gmail.com kevinwu-double-mixed student-lookups" (approve just the student-lookup api product of the developer app kevin.wu@gmail.com/kevinwu-double-mixed)
 */
 const modifyAppStatus = /apps (approve|revoke) (\S+) (\S+)(?: (\S+))?/i
 
@@ -53,20 +54,43 @@ module.exports = robot => {
   const slack = new slackClient(robot.adapter.options.token)
 
   robot.respond(modifyAppStatus, async res => {
-    const [, action, developer, app, apiProduct] = res.match
+    const [, status, developer, app, apiProduct] = res.match
 
-    //TODO: we need to apply status if someone inputs an apiProduct
     try {
-      // const { credentials } = await getDeveloperApps(developer, app)
-      // const consumerKey = credentials[0].consumerKey
-      // await postDeveloperAppProduct(developer, app, apiProduct, consumerKey, action)
+      const { credentials } = await getDeveloperApps(developer, app)
+      const { consumerKey, apiProducts: products = [] } = credentials[0]
 
-      await postDeveloperApp(developer, app, action)
+      if (!apiProduct) {
+        //if no apiProducts were defined, then also set the app status
+        await postDeveloperApp(developer, app, status)
+      }
+
+      await products
+        .filter(
+          product =>
+            apiProduct
+              ? product.apiproduct === apiProduct
+              : !product.status.includes(status)
+        )
+        //TODO: I could only get serial calls to work.  Maybe someone can get parallel executions to work?  This might be an Apigee-specific nuance
+        .reduce(
+          (promise, product) =>
+            promise.then(() =>
+              postDeveloperAppProduct(
+                developer,
+                app,
+                product.apiproduct,
+                consumerKey,
+                status
+              )
+            ),
+          Promise.resolve()
+        )
 
       const data = await apiProducts().then(allProducts =>
         allProducts.filter(
-          apiProduct =>
-            apiProduct.developer == developer && apiProduct.developerApp == app
+          product =>
+            product.developer == developer && product.developerApp == app
         )
       )
 
@@ -80,7 +104,7 @@ module.exports = robot => {
       await slack.files.upload({
         channels: res.message.room, //this makes it public, otherwise it wont output
         content: cTable.getTable(data).trim(),
-        title: `updating ${developer} ${app} to status ${action}`
+        title: `updating ${developer} ${app} to status ${status}`
       })
     } catch (err) {
       console.log('err', err)
