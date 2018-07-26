@@ -4,7 +4,11 @@ const getDeveloper = developer =>
   toData(
     developer
       ? apigeeClient.get('/developers' + `/${developer}`)
-      : apigeeClient.get('/developers')
+      : apigeeClient.get('/developers', {
+          params: {
+            expand: true
+          }
+        })
   )
 
 const getDeveloperApps = (developer, app) =>

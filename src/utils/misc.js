@@ -1,13 +1,14 @@
 const { from } = require('rxjs')
-const { map, mergeMap, toArray, mergeAll } = require('rxjs/operators')
+const { map, mergeMap, toArray, mergeAll, pluck } = require('rxjs/operators')
 
 const { getDeveloper, getDeveloperApps } = require('../endpoints/apigeeActions')
 
 const apiProducts = () =>
   from(getDeveloper())
     .pipe(
+      pluck('developer'),
       mergeAll(),
-      mergeMap(developer => getDeveloper(developer)),
+      mergeMap(developer => getDeveloper(developer.email)),
       mergeMap(developer => {
         const { apps, email } = developer
         return from(apps).pipe(
