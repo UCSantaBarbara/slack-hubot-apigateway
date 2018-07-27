@@ -6,6 +6,7 @@
 //   hubot apps search <text> - Search all developer applications that contains <text>
 //   hubot apps (approve|revoke) <developerEmail> <developerApp> - Approve or revoke a developer app and all of the api products associated with that developer app
 //   hubot apps (approve|revoke) <developerEmail> <developerApp> <apiProduct> - Approve or revoke an apiProduct within a developer app.  Does not apply status change to main developer app.
+//   hubot devs created <days> - Search all developers with accounts created within the last <days>.  If <days> is omitted, it is assumed to be from the last 24 hours.
 
 // URLS:
 //   /hubot/help
@@ -23,11 +24,22 @@ const cTable = require('console.table')
 const { apiProducts } = require('../utils/misc')
 const { firstBy } = require('thenby')
 
+const differenceInCalendarDays = require('date-fns/difference_in_calendar_days')
+const formatDateTime = require('date-fns/format')
+
 const {
+  getDeveloper,
   postDeveloperApp,
   postDeveloperAppProduct,
   getDeveloperApps
 } = require('../endpoints/apigeeActions')
+
+/*
+examples:
+"devs created <number of days>" (shows all.developers whose accounts were created in the last X number of days)
+"devs created" (shows all developers whose accounts were created in the last 24 hours)
+*/
+const listenToDevs = /devs created(?: ([0-9]+))?/i
 
 /*
 examples:
@@ -52,6 +64,38 @@ const modifyAppStatus = /apps (approve|revoke) (\S+) (\S+)(?: (\S+))?/i
 
 module.exports = robot => {
   const slack = new slackClient(robot.adapter.options.token)
+
+  robot.respond(listenToDevs, async res => {
+    const [, days = 1] = res.match
+
+    try {
+      const allDevelopers = await getDeveloper()
+
+      const filteredDevelopers = allDevelopers.developer
+        .filter(
+          dev => differenceInCalendarDays(new Date(), dev.createdAt) <= days
+        )
+        .map(dev => ({
+          developer: dev.email,
+          created: formatDateTime(dev.createdAt, 'MM/DD/YYYY h:mm:ss A')
+        }))
+
+      filteredDevelopers.sort(firstBy('developer'))
+
+      await slack.files.upload({
+        channels: res.message.room, //this makes it public, otherwise it wont output
+        content:
+          cTable.getTable(filteredDevelopers).trim() ||
+          'nothing matches your criteria',
+        title: `showing developers with accounts created within the last ${days} days`
+      })
+    } catch (err) {
+      console.log('err', err)
+      res.reply(
+        'uh oh, something bad happened.  Try your message again.  If error persists, call for help.'
+      )
+    }
+  })
 
   robot.respond(modifyAppStatus, async res => {
     const [, status, developer, app, apiProduct] = res.match
