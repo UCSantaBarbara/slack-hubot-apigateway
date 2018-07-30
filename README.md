@@ -1,21 +1,29 @@
 # ApiGateway Hubot (@apibot) for ucsbtech Slack workspace
 
-## Why?
+## Why a chatbot?
 
-This chat robot exists because:
-* ?? (TODO) (diana: what should hubot do?  requirements?)
+This chatbot exists to provide developers and non-developers a natural language interface for interacting with the [Apigee Management APIs](https://apidocs.apigee.com/api-reference/content/introduction).  The chatbot only focuses on performing commonly used administrative actions.
 
-## Current Commands (TODO)
+## Commands List
 
+### Developers
 * `devs created <days = 1>` - Find Devs created in last X days - Apigee
 
-* `targetserver list <env>` - Apigee
-* `targetserver (add|update) <env> <name> <hostname>` - Apigee
-* `targetserver delete <env> <name>` - Apigee
+### Apps
+* `apps (all|no|approved|pending|revoked)` - Display developer applications by status or by its api product status
+* `apps search <text>` - Search all developer applications that contains `<text>`
+* `apps (approve|revoke) <developerEmail> <developerApp>` - Approve or revoke a developer app and all of the api products associated with that developer app
+* `apps (approve|revoke) <developerEmail> <developerApp> <apiProduct>` - Approve or revoke an apiProduct within a developer app.  Does not apply status change to main developer app.
 
+## Commands (in Development)
+* `targetserver list <env>`
+* `targetserver (add|update) <env> <name> <hostname>`
+* `targetserver delete <env> <name>`
 * `stats`
 
 ## Development
+
+Ideally, development should work in both Windows and Mac/Linux environments because we are using [cross-spawn](https://www.npmjs.com/package/cross-spawn).
 
 * Clone this repo
 * standup your own slack community instance (this is because Slack only allows 5 integrations in their free tier and the UCSB Tech Community has already exhausted all 5 integration slots)
@@ -31,12 +39,11 @@ APIGEE_PASSWORD=your-apigee-password
 ```
 * `npm run dev`
 
-Ideally, this should work in both Windows and Mac/Linux environments because we are using [cross-spawn](https://www.npmjs.com/package/cross-spawn).
 
 
-## Deploying to Google App Engine Standard Environment (TODO)
+## Deploying to Google App Engine Flexible Environment (TODO)
 
-* Create a new GAE standard environment (beta?)
+* Create a new GAE flexible environment (TODO: we need to identify the account GAE should run under)
 * open up your GAE shell console
 * clone this repo
 * cd into this repo
@@ -44,3 +51,6 @@ Ideally, this should work in both Windows and Mac/Linux environments because we 
 * configure `app.yaml` and ensure your environmental variables (ideally, we can spit this out using deploy scripts launched from `npm run start`) (TODO)
 * ...??  `npm run start`?
 * run `gcloud app deploy`
+
+
+## Deploying to Google App Engine Standard Environment (Beta, TODO)
