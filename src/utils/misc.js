@@ -1,13 +1,14 @@
 const { from } = require('rxjs')
-const { map, mergeMap, filter, toArray, mergeAll } = require('rxjs/operators')
+const { map, mergeMap, toArray, mergeAll, pluck } = require('rxjs/operators')
 
 const { getDeveloper, getDeveloperApps } = require('../endpoints/apigeeActions')
 
 const apiProducts = () =>
   from(getDeveloper())
     .pipe(
+      pluck('developer'),
       mergeAll(),
-      mergeMap(developer => getDeveloper(developer)),
+      mergeMap(developer => getDeveloper(developer.email)),
       mergeMap(developer => {
         const { apps, email } = developer
         return from(apps).pipe(
@@ -27,18 +28,18 @@ const apiProducts = () =>
               developer,
               developerApp,
               appStatus,
-              apiproduct: '---',
+              apiProduct: '---',
               apiStatus: '---'
             }
           ]
         } else {
           return apiProducts.reduce((products, product) => {
-            const { status: apiStatus, apiproduct } = product
+            const { status: apiStatus, apiproduct: apiProduct } = product
             products.push({
               developer,
               developerApp,
               appStatus,
-              apiproduct,
+              apiProduct,
               apiStatus
             })
             return products
