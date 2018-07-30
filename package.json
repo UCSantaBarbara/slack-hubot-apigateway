@@ -9,7 +9,6 @@
     "axios": "^0.18.0",
     "console.table": "^0.10.0",
     "cross-spawn": "^6.0.5",
-    "date-fns": "^1.29.0",
     "dotenv": "^6.0.0",
     "hubot": "^2.19.0",
     "hubot-auth": "^2.1.0",
@@ -24,8 +23,7 @@
     "hubot-slack-utils": "0.0.5",
     "jobot-brain-file": "^1.0.1",
     "right-pad": "^1.0.1",
-    "rxjs": "^6.2.1",
-    "thenby": "^1.2.6"
+    "rxjs": "^6.2.1"
   },
   "engines": {
     "node": "8.x.x"

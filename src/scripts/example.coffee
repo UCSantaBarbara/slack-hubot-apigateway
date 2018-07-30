@@ -1,6 +1,8 @@
 # Description:
 #   Example scripts for you to examine and try out.
 #
+# Commands:
+#   hubot some example <here>
 #
 # Notes:
 #   They are commented out by default, because most of them are pretty silly and

@@ -16,8 +16,7 @@ apigeeClient.interceptors.request.use(
     return Promise.resolve({
       ...config,
       headers: {
-        Authorization: `Bearer ${access_token}`,
-        ...(config.data && config.data.headers ? config.data.headers : {})
+        Authorization: `Bearer ${access_token}`
       }
     })
   },
