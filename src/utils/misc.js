@@ -9,13 +9,12 @@ const apiProducts = () =>
       pluck('developer'),
       mergeAll(),
       mergeMap(developer => getDeveloper(developer.email)),
-      mergeMap(developer => {
-        const { apps, email } = developer
-        return from(apps).pipe(
+      mergeMap(({ apps, email }) =>
+        from(apps).pipe(
           mergeMap(app => getDeveloperApps(email, app)),
           map(app => ({ email, ...app }))
         )
-      }),
+      ),
       map(app => {
         const { email: developer, name: developerApp, status: appStatus } = app
 
