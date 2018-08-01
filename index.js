@@ -1,6 +1,6 @@
 const { spawn } = require('cross-spawn')
 const dotenv = require('dotenv')
-dotenv.config()
+dotenv.config({path: '.env.generated'})
 
 const spawned = spawn('node_modules/.bin/hubot', process.argv.slice(2))
 

@@ -28,7 +28,6 @@ Ideally, development should work in both Windows and Mac/Linux environments beca
 * Clone this repo
 * standup your own slack community instance (this is because Slack only allows 5 integrations in their free tier and the UCSB Tech Community has already exhausted all 5 integration slots)
   * get a bot token in your community (TODO)
-* `cd` into this repo and run `npm install`
 * Create a `.env` file in this repo's root directory so that it contains the following:
 ```sh
 HUBOT_SLACK_TOKEN=your-hubot-slack-oauth-token-here
@@ -37,7 +36,8 @@ HUBOT_SLACK_TOKEN=your-hubot-slack-oauth-token-here
 APIGEE_USERNAME=your-apigee-username
 APIGEE_PASSWORD=your-apigee-password 
 ```
-* `npm run dev`
+* `cd` into this repo and run `npm install`
+* run `npm run dev`
 
 
 

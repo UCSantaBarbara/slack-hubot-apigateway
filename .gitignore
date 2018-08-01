@@ -261,3 +261,4 @@ paket-files/
 
 # environment file
 .env
+.env.generated
