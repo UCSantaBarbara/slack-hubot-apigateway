@@ -53,4 +53,3 @@ APIGEE_PASSWORD=your-apigee-password
 * run `gcloud app deploy`
 
 
-## Deploying to Google App Engine Standard Environment (Beta, TODO)
