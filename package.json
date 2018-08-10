@@ -5,7 +5,7 @@
   "description": "ApiGateway Hubot (@apibot) for ucsbtech Slack workspace",
   "dependencies": {
     "@slack/client": "^4.3.1",
-    "apigee-auth": "^1.0.0",
+    "apigee-auth": "^2.0.0",
     "axios": "^0.18.0",
     "console.table": "^0.10.0",
     "cross-spawn": "^6.0.5",

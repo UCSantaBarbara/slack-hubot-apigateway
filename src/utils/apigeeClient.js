@@ -3,7 +3,8 @@ const ApigeeAuth = require('apigee-auth')
 
 const apigeeAuth = new ApigeeAuth(
   process.env.APIGEE_USERNAME,
-  process.env.APIGEE_PASSWORD
+  process.env.APIGEE_PASSWORD,
+  process.env.APIGEE_MFATOKEN
 )
 
 const apigeeClient = axios.create({

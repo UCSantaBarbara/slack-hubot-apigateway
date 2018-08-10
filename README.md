@@ -35,6 +35,7 @@ HUBOT_SLACK_TOKEN=your-hubot-slack-oauth-token-here
 # this is the apigee account that calls the Apigee Management APIs
 APIGEE_USERNAME=your-apigee-username
 APIGEE_PASSWORD=your-apigee-password 
+APIGEE_MFATOKEN=your-optional-2fa-totp-secret #optional
 ```
 * `cd` into this repo and run `npm install`
 * run `npm run dev`
