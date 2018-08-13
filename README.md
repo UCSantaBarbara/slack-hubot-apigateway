@@ -33,6 +33,7 @@ Ideally, development should work in both Windows and Mac/Linux environments beca
 HUBOT_SLACK_TOKEN=your-hubot-slack-oauth-token-here
 
 # this is the apigee account that calls the Apigee Management APIs
+# note that this account is the organization administrator account so please be responsible in securing these credentials
 APIGEE_USERNAME=your-apigee-username
 APIGEE_PASSWORD=your-apigee-password 
 APIGEE_MFATOKEN=your-optional-2fa-totp-secret #optional
@@ -45,12 +46,43 @@ APIGEE_MFATOKEN=your-optional-2fa-totp-secret #optional
 ## Deploying to Google App Engine Flexible Environment (TODO)
 
 * Create a new GAE flexible environment (TODO: we need to identify the account GAE should run under)
-* open up your GAE shell console
-* clone this repo
-* cd into this repo
-* run `npm install`
+  * New Project (place it under the ucsb.edu organization is fine)
+* Choose the project you just created
+  * Go to App Engine
+* Open up your Google Cloud Shell Console
+* Clone this repo, then `cd` into it
+
+* **Create a `.env` file with its contents in this repo's root directory exactly as described in the [Development](#Development) area**
+
 * configure `app.yaml` and ensure your environmental variables (ideally, we can spit this out using deploy scripts launched from `npm run start`) (TODO)
+
+
+* run `npm install`
 * ...??  `npm run start`?
 * run `gcloud app deploy`
 
 
+
+## Deploying to Heroku
+
+* **Create a `.env` file with its contents in this repo's root directory exactly as described in the [Development](#Development) area**
+* Get the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) for your platform
+* Login to your Heroku CLI if you haven't already
+  * $ `heroku login`
+* $ `heroku git:remote --app heroku-app-instance-name`
+  * for example, this could be `hubot-ucsb-test`
+* $ `npm run heroku:set:env`
+  * You should see something like this:
+    ```
+    Setting HUBOT_SLACK_TOKEN, APIGEE_USERNAME, APIGEE_PASSWORD, APIGEE_MFATOKEN, HUBOT_AUTH_ADMIN and restarting ⬢ hubot-ucsb-test2... done, v6
+    APIGEE_MFATOKEN:   xxx
+    APIGEE_PASSWORD:   xxx
+    APIGEE_USERNAME:   xxx
+    HUBOT_AUTH_ADMIN:  xxx
+    HUBOT_SLACK_TOKEN: xxx
+    ```
+
+* ...`git push heroku javascript:master` (TODO: javascript is temporary until it becomes master branch)
+  * For now, we're pushing the javascript branch to the heroku master branch.  Non-master branches pushed to heroku does not build nor deploy.
+* The heroku app should now be running
+* ...Teams (TODO: )

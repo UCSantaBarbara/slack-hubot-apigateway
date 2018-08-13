@@ -34,6 +34,7 @@
     "start": "npm run prod",
     "dev": "npm run generate && node index.js --adapter slack",
     "prod": "node index.js --adapter slack",
+    "heroku:set:env": "npm run generate && heroku config:set $(cat .env.generated | sed '/^$/d; /#[[:print:]]*$/d')",
     "generate": "npm run clean && npm run create:environment && npm run append:adminUsers",
     "clean": "rm -rf .env.generated",
     "create:environment": "cp .env .env.generated",
