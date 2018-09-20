@@ -1,5 +1,5 @@
 const axios = require('axios')
-const ApigeeAuth = require('apigee-auth')
+const ApigeeAuth = require('./apigeeAuth')
 
 const apigeeAuth = new ApigeeAuth(
   process.env.APIGEE_USERNAME,
@@ -18,6 +18,7 @@ apigeeClient.interceptors.request.use(
       ...config,
       headers: {
         Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
         ...(config.data && config.data.headers ? config.data.headers : {})
       }
     })

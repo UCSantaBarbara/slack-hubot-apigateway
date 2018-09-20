@@ -2,10 +2,10 @@
 //   Generates help commands for Hubot.
 //
 // Commands:
-//   hubot apps (all|no|approved|pending|revoked) - Display developer applications by status or by its api product status
-//   hubot apps search <text> - Search all developer applications that contains <text>
-//   hubot apps (approve|revoke) <developerEmail> <developerApp> - Approve or revoke a developer app and all of the api products associated with that developer app
-//   hubot apps (approve|revoke) <developerEmail> <developerApp> <apiProduct> - Approve or revoke an apiProduct within a developer app.  Does not apply status change to main developer app.
+//   hubot apps (all|no|approved|pending|revoked) - apigee - Display developer applications by status or by its api product status
+//   hubot apps search <text> - apigee - Search all developer applications that contains <text>
+//   hubot apps (approve|revoke) <developerEmail> <developerApp> - apigee - Approve or revoke a developer app and all of the api products associated with that developer app
+//   hubot apps (approve|revoke) <developerEmail> <developerApp> <apiProduct> - apigee - Approve or revoke an apiProduct within a developer app.  Does not apply status change to main developer app.
 
 // URLS:
 //   /hubot/help
@@ -29,31 +29,16 @@ const {
   getDeveloperApps
 } = require('../endpoints/apigeeActions')
 
-/*
-examples:
-"apps all" (shows all developer apps and their api products)
-"apps no" (shows developer apps with no api products)
-"apps approved" (shows developer apps that are approved)
-*/
-const listenToApps = /apps (all|no|approved|pending|revoked)/i
-
-/*
-examples:
-"apps search kevinwu" (shows all developer alls where it can find on a search term of 'kevinwu' in the developer, developerApp, or apiProduct)
-*/
-const searchApps = /apps search (.*)/i
-
-/*
-examples:
-"apps approve kevin.wu@gmail.com kevinwu-double-mixed" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed and all of the api products associated with this developer app)
-"apps approve kevin.wu@gmail.com kevinwu-double-mixed student-lookups" (approve just the student-lookup api product of the developer app kevin.wu@gmail.com/kevinwu-double-mixed)
-*/
-const modifyAppStatus = /apps (approve|revoke) (\S+) (\S+)(?: (\S+))?/i
 
 module.exports = robot => {
   const slack = new slackClient(robot.adapter.options.token)
 
-  robot.respond(modifyAppStatus, async res => {
+  /*
+  examples:
+  "apps approve kevin.wu@gmail.com kevinwu-double-mixed" (approve the developer app of kevin.wu@gmail.com/kevinwu-double-mixed and all of the api products associated with this developer app)
+  "apps approve kevin.wu@gmail.com kevinwu-double-mixed student-lookups" (approve just the student-lookup api product of the developer app kevin.wu@gmail.com/kevinwu-double-mixed)
+  */
+  robot.respond(/apps (approve|revoke) (\S+) (\S+)(?: (\S+))?/i, async res => {
     const [, status, developer, app, apiProduct] = res.match
 
     try {
@@ -114,7 +99,11 @@ module.exports = robot => {
     }
   })
 
-  robot.respond(searchApps, async res => {
+  /*
+  examples:
+  "apps search kevinwu" (shows all developer alls where it can find on a search term of 'kevinwu' in the developer, developerApp, or apiProduct)
+  */
+  robot.respond(/apps search (.*)/i, async res => {
     const searchText = res.match[1]
     try {
       const data = await apiProducts().then(allProducts =>
@@ -145,7 +134,13 @@ module.exports = robot => {
     }
   })
 
-  robot.respond(listenToApps, async res => {
+  /*
+  examples:
+  "apps all" (shows all developer apps and their api products)
+  "apps no" (shows developer apps with no api products)
+  "apps approved" (shows developer apps that are approved)
+  */
+  robot.respond(/apps (all|no|approved|pending|revoked)/i, async res => {
     const status = res.match[1]
 
     try {

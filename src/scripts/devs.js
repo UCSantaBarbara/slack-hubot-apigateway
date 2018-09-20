@@ -2,7 +2,7 @@
 //   Generates help commands for Hubot.
 //
 // Commands:
-//   hubot devs created <days> - Search all developers with accounts created within the last <days>.  If <days> is omitted, it is assumed to be from the last 24 hours.
+//   hubot devs created <days> - apigee - Search all developers with accounts created within the last <days>.  If <days> is omitted, it is assumed to be from the last 24 hours.
 
 // URLS:
 //   /hubot/help
@@ -24,17 +24,16 @@ const formatDateTime = require('date-fns/format')
 
 const { getDeveloper } = require('../endpoints/apigeeActions')
 
-/*
-examples:
-"devs created <number of days>" (shows all.developers whose accounts were created in the last X number of days)
-"devs created" (shows all developers whose accounts were created in the last 24 hours)
-*/
-const listenToDevs = /devs created(?: ([0-9]+))?/i
 
 module.exports = robot => {
   const slack = new slackClient(robot.adapter.options.token)
 
-  robot.respond(listenToDevs, async res => {
+  /*
+  examples:
+  "devs created <number of days>" (shows all.developers whose accounts were created in the last X number of days)
+  "devs created" (shows all developers whose accounts were created in the last 24 hours)
+  */
+  robot.respond(/devs created(?: ([0-9]+))?/i, async res => {
     const [, days = 1] = res.match
 
     try {
