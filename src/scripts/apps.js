@@ -128,6 +128,7 @@ module.exports = robot => {
         title: `searching for ${searchText}`
       })
     } catch (err) {
+      console.log(err)
       res.reply(
         'uh oh, something bad happened.  Try your message again.  If error persists, call for help.'
       )
