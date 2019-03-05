@@ -29,7 +29,6 @@ const {
   getDeveloperApps
 } = require('../endpoints/apigeeActions')
 
-
 module.exports = robot => {
   const slack = new slackClient(robot.adapter.options.token)
 

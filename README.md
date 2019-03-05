@@ -41,32 +41,49 @@ HUBOT_SLACK_TOKEN=your-hubot-slack-oauth-token-here
 APIGEE_USERNAME=your-apigee-username
 APIGEE_PASSWORD=your-apigee-password
 APIGEE_MFATOKEN=your-optional-2fa-totp-secret #optional
+
+# this is the list of hubot admins (see admins.md for full list)
+HUBOT_AUTH_ADMIN=U1TJWQEG3,U1TLTC690,U1TT6U50W, ...and more
 ```
 
 - `cd` into this repo and run `npm install`
 - run `npm run dev`
 
+## Hubot admins
+
+Please review the [admins.md](admins.md) file for the list of Hubot admins. **Changes to the [admins.md](admins.md) file will require an update to the Heroku environmental variables.**
+
+## Heroku setup instructions
+
+**Note: the admins should have already done this during the setup of Heroku so you shouldn't need to do this again unless there are changes to the configuration of the production environment.**
+
+Heroku needs the following environmental variables setup. You can set these environmental variables via the Heroku CLI or through the Heroku Web GUI:
+
+- NODE_ENV: production
+- HUBOT_SLACK_TOKEN: your-hubot-slack-oauth-token-here
+- APIGEE_USERNAME: your-apigee-username
+- APIGEE_PASSWORD: your-apigee-password
+- APIGEE_MFATOKEN: your-optional-2fa-totp-secret
+- HUBOT_AUTH_ADMIN: your-list-of-hubot-admins
+
 ## Deploying to Heroku
 
-- **Create a `.env` file with its contents in this repo's root directory exactly as described in the [Development](#Development) area**
-- Get the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) for your platform
-- Login to your Heroku CLI if you haven't already
-  - \$ `heroku login`
-- \$ `heroku git:remote --app heroku-app-instance-name`
-  - for example, this could be `hubot-ucsb-test`
-- \$ `npm run heroku:set:env`
+You can cntact the admins for this repo to help deploy this safely in Heroku.
 
-  - You should see something like this:
-    ```
-    Setting HUBOT_SLACK_TOKEN, APIGEE_USERNAME, APIGEE_PASSWORD, APIGEE_MFATOKEN, HUBOT_AUTH_ADMIN and restarting ⬢ hubot-ucsb-test2... done, v6
-    APIGEE_MFATOKEN:   xxx
-    APIGEE_PASSWORD:   xxx
-    APIGEE_USERNAME:   xxx
-    HUBOT_AUTH_ADMIN:  xxx
-    HUBOT_SLACK_TOKEN: xxx
-    ```
+Alternatively, you can read the [Heroku: Deploying with Git](https://devcenter.heroku.com/articles/git). The gist of it is:
 
-- ...`git push heroku javascript:master` (TODO: javascript is temporary until it becomes master branch)
-  - For now, we're pushing the javascript branch to the heroku master branch. Non-master branches pushed to heroku does not build nor deploy.
-- The heroku app should now be running
+- `$ heroku login` (if you haven't already logged in)
+- `$ heroku git:remote -a slack-hubot-apigateway` (if you haven't already added the remote Heroku location)
+- `git push heroku master`
+
+The last `git push` command is actually the one that pushes your master branch to Heroku for deployment.
+
+TODO: determine how to securely integrate GitHub with Heroku so that deployments to Heroku is done via a commit to the GitHub master branch instead.
+
+## What version am I running?
+
+To ensure that Heroku is running your deployed changes, you can chat `misc version` to see what version is running in Heroku. That version running should match the commit sha in HEAD on master.
+
+## Todo List
+
 - ...Teams (TODO: )
