@@ -9,14 +9,14 @@ module.exports = robot => {
     try {
       const currentRepo = await Git.Repository.open(process.cwd())
       const head = await currentRepo.getHeadCommit()
+
+      res.send(
+        `Hubot is running version \`${head.sha()}\`` +
+          `\ncommitted on: \`${head.date()}\`` +
+          `\nby: \`${head.author().name()}\``
+      )
     } catch (err) {
       console.error('unable to get git repo information', err)
     }
-
-    res.send(
-      `Hubot is running version \`${head.sha()}\`` +
-        `\ncommitted on: \`${head.date()}\`` +
-        `\nby: \`${head.author().name()}\``
-    )
   })
 }
