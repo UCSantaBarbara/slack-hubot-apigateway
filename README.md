@@ -17,6 +17,10 @@ This chatbot exists to provide developers and non-developers a natural language 
 - `apps (approve|revoke) <developerEmail> <developerApp>` - Approve or revoke a developer app and all of the api products associated with that developer app
 - `apps (approve|revoke) <developerEmail> <developerApp> <apiProduct>` - Approve or revoke an apiProduct within a developer app. Does not apply status change to main developer app.
 
+### Misc
+
+- `misc version` - Displays the current version of the running chabot (useful for determining whether the running chatbat has the latest changes)
+
 ## Commands (in Development)
 
 - `targetserver list <env>`
