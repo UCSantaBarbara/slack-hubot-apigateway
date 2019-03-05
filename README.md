@@ -70,6 +70,10 @@ Heroku needs the following environmental variables setup. You can set these envi
 - APIGEE_MFATOKEN: your-optional-2fa-totp-secret
 - HUBOT_AUTH_ADMIN: your-list-of-hubot-admins
 
+It's also nice to install the [Dyno Metadata](https://devcenter.heroku.com/articles/dyno-metadata) from Heroku Labs so that we can get useful information about the app that is deployed. This is a requirement for the `misc version` chatbot command. To install this:
+
+`heroku labs:enable runtime-dyno-metadata -a slack-hubot-apigateway`
+
 ## Deploying to Heroku
 
 You can cntact the admins for this repo to help deploy this safely in Heroku.
@@ -86,7 +90,7 @@ TODO: determine how to securely integrate GitHub with Heroku so that deployments
 
 ## What version am I running?
 
-To ensure that Heroku is running your deployed changes, you can chat `misc version` to see what version is running in Heroku. That version running should match the commit sha in HEAD on master.
+To ensure that Heroku is running your deployed changes, you can chat `misc version` to see what version is running in Heroku. That version running should match the commit sha in HEAD on master. This command requires that [Dyno Metadata](https://devcenter.heroku.com/articles/dyno-metadata) be enabled.
 
 ## Todo List
 
