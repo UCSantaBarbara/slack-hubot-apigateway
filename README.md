@@ -72,19 +72,21 @@ Heroku needs the following environmental variables setup. You can set these envi
 
 It's also nice to install the [Dyno Metadata](https://devcenter.heroku.com/articles/dyno-metadata) from Heroku Labs so that we can get useful information about the app that is deployed. This is a requirement for the `misc version` chatbot command. To install this:
 
-`heroku labs:enable runtime-dyno-metadata -a slack-hubot-apigateway`
+`$ heroku labs:enable runtime-dyno-metadata -a slack-hubot-apigateway`
 
 ## Deploying to Heroku
 
 You can cntact the admins for this repo to help deploy this safely in Heroku.
 
-Alternatively, you can read the [Heroku: Deploying with Git](https://devcenter.heroku.com/articles/git). The gist of it is:
+Alternatively, you can read the [Heroku: Deploying with Git](https://devcenter.heroku.com/articles/git) guide. The gist of it is:
 
 - `$ heroku login` (if you haven't already logged in)
 - `$ heroku git:remote -a slack-hubot-apigateway` (if you haven't already added the remote Heroku location)
 - `git push heroku master`
 
-The last `git push` command is actually the one that pushes your master branch to Heroku for deployment.
+The last `git push` command is actually the one that pushes your master branch to Heroku for deployment. At this point, you should see messages from Heroku that the Build was successful. If not, investigate the error.
+
+To debug a Heroku deployed released, use `$ heroku logs -a slack-hubot-apigateway`
 
 TODO: determine how to securely integrate GitHub with Heroku so that deployments to Heroku is done via a commit to the GitHub master branch instead.
 

@@ -23,7 +23,6 @@
     "hubot-slack": "^4.5.0",
     "hubot-slack-utils": "0.0.5",
     "jobot-brain-file": "^1.0.1",
-    "nodegit": "^0.24.1",
     "right-pad": "^1.0.1",
     "rxjs": "^6.2.1",
     "thenby": "^1.2.6"
