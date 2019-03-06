@@ -8,13 +8,15 @@ module.exports = robot => {
     const {
       HEROKU_RELEASE_CREATED_AT,
       HEROKU_RELEASE_VERSION,
-      HEROKU_SLUG_COMMIT
+      HEROKU_SLUG_COMMIT,
+      HEROKU_SLUG_DESCRIPTION
     } = process.env
 
     if (HEROKU_SLUG_COMMIT) {
       res.send(
         `Hubot is running version \`${HEROKU_SLUG_COMMIT} (${HEROKU_RELEASE_VERSION})\`` +
-          `\nReleased to Heroku Production on: \`${HEROKU_RELEASE_CREATED_AT}\``
+          `\nDescription is \`${HEROKU_SLUG_DESCRIPTION}\`` +
+          `\nReleased to Heroku Production on \`${HEROKU_RELEASE_CREATED_AT}\``
       )
     } else {
       res.send(
