@@ -76,7 +76,7 @@ It's also nice to install the [Dyno Metadata](https://devcenter.heroku.com/artic
 
 ## Deploying to Heroku
 
-You can cntact the admins for this repo to help deploy this safely in Heroku.
+You can contact the admins for this repo to help deploy this safely in Heroku.
 
 Alternatively, you can read the [Heroku: Deploying with Git](https://devcenter.heroku.com/articles/git) guide. The gist of it is:
 
