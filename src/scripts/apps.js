@@ -44,6 +44,14 @@ module.exports = robot => {
       const { credentials } = await getDeveloperApps(developer, app)
       const { consumerKey, apiProducts: products = [] } = credentials[0]
 
+      user = robot.brain.userForName(res.message.user.name);
+      userRoles = robot.auth.userRoles(user);
+      role = "apigee";
+      if (robot.auth.hasRole(user, role) === false) {
+        res.send("Only users with the 'apigee' role are able to perform this operation.");
+        return;
+      }
+
       if (!apiProduct) {
         //if no apiProducts were defined, then also set the app status
         await postDeveloperApp(developer, app, status)
